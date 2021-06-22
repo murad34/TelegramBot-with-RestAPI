@@ -12,6 +12,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,7 +51,7 @@ public class Bot extends TelegramLongPollingBot {
         KeyboardRow keyboardSecondRow = new KeyboardRow();
 
         keyboardFirstRow.add(new KeyboardButton("/Список"));
-        keyboardFirstRow.add(new KeyboardButton("/Поиск"));
+        keyboardFirstRow.add(new KeyboardButton("/Действия"));
         keyboardFirstRow.add(new KeyboardButton("/Info"));
 
         keyboardSecondRow.add(new KeyboardButton("/1 day"));
@@ -58,7 +59,7 @@ public class Bot extends TelegramLongPollingBot {
         keyboardSecondRow.add(new KeyboardButton("/1 month"));
 
         keyboardRowList.add(keyboardFirstRow);
-//        keyboardRowList.add(keyboardSecondRow);
+        keyboardRowList.add(keyboardSecondRow);
 
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
 
@@ -76,49 +77,54 @@ public class Bot extends TelegramLongPollingBot {
 
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
         InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
+        InlineKeyboardButton inlineKeyboardButton3 = new InlineKeyboardButton();
 
-        inlineKeyboardButton1.setText("1 day");
+        inlineKeyboardButton1.setText("Открыт");
+        inlineKeyboardButton1.setCallbackData("Done !");
 
-        try {
+        inlineKeyboardButton2.setText("Закрыт");
+        inlineKeyboardButton2.setCallbackData("Done !");
 
-            String sql = "select * from zadagan where id = 1";
-            statement = connectDB.connecting().createStatement();
-            rs = statement.executeQuery(sql);
-
-            while (rs.next()) {
-
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String surname = rs.getString("surname");
-                String phone_number = rs.getString("phone_number");
-                String products_code = rs.getString("products_code");
-                String items = rs.getString("items");
-
-                String mm = "Id : " + id +
-                        "\n Name : " + name +
-                        "\n Surname : " + surname ;
-//                        "\n Phone Number : " + phone_number ;
-//                        "\n Products Code : " + products_code +
-//                        "\n Items : " + items ;
-
-                inlineKeyboardButton1.setCallbackData(mm);
-
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        inlineKeyboardButton2.setText("1 month");
-        inlineKeyboardButton2.setCallbackData(" Last 30 days ");
+        inlineKeyboardButton3.setText("В обработке");
+        inlineKeyboardButton3.setCallbackData("Done !");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
 
         keyboardButtonsRow1.add(inlineKeyboardButton1);
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("1 week").setCallbackData(" Last 7 days "));
+        keyboardButtonsRow1.add(inlineKeyboardButton2);
+        keyboardButtonsRow2.add(inlineKeyboardButton3);
 
-        keyboardButtonsRow2.add(inlineKeyboardButton2);
+//        try {
+//
+//            String sql = "select * from zadagan where id = 1";
+//            statement = connectDB.connecting().createStatement();
+//            rs = statement.executeQuery(sql);
+//
+//            while (rs.next()) {
+//
+//                int id = rs.getInt("id");
+//                String name = rs.getString("name");
+//                String surname = rs.getString("surname");
+//                String phone_number = rs.getString("phone_number");
+//                String products_code = rs.getString("products_code");
+//                String items = rs.getString("items");
+//                Date date = rs.getDate("date");
+//
+//                String mm = "Id : " + id +
+//                        "\n Name : " + name +
+//                        "\n Surname : " + surname ;
+////                        "\n Phone Number : " + phone_number ;
+////                        "\n Products Code : " + products_code +
+////                        "\n Items : " + items ;
+//
+//                inlineKeyboardButton1.setCallbackData(mm);
+//
+//            }
+//
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
@@ -151,6 +157,7 @@ public class Bot extends TelegramLongPollingBot {
                 String phone_number = rs.getString("phone_number");
                 String products_code = rs.getString("products_code");
                 String items = rs.getString("items");
+                Date date = rs.getDate("date");
 
                 System.out.printf("%d. %s %s :\n Phone Number : %s \n Products Code : %s \n Items : %s  \n \n",
                         id, name, surname, phone_number, products_code, items);
@@ -160,7 +167,8 @@ public class Bot extends TelegramLongPollingBot {
                         "\n Surname : " + surname +
                         "\n Phone Number : " + phone_number +
                         "\n Products Code : " + products_code +
-                        "\n Items : " + items;
+                        "\n Items : " + items +
+                        "\n Date : " + date;
 
                 sendMsg(message, mm);
 
@@ -176,7 +184,7 @@ public class Bot extends TelegramLongPollingBot {
 
         if(update.hasMessage()){
             if(update.getMessage().hasText()){
-                if(update.getMessage().getText().equals("/Поиск")){
+                if(update.getMessage().getText().equals("/Действия")){
                     try {
                         execute(sendInlineKeyBoardMessage(update.getMessage().getChatId()));
                     } catch (TelegramApiException e) {
@@ -202,6 +210,10 @@ public class Bot extends TelegramLongPollingBot {
 
         methodForSearch(update);
 
+        Statement statement;
+        DataBase connectDB = new DataBase();
+        ResultSet rs;
+
         Message message = update.getMessage();
 
         if (message != null && message.hasText()) {
@@ -224,9 +236,129 @@ public class Bot extends TelegramLongPollingBot {
 
                 // ----------------- SEARCH ------------------------------------------------
 
-                case "/Поиск":
+                case "/Действия":
 
-//                    methodForSearch(update);
+
+
+                    break;
+
+                //----------------------------------------------------------------------------
+
+                case "/1 day":
+
+                    sendMsg(message, "Last 24 hours : ");
+
+                    try {
+
+                        String sql = "SELECT * FROM zadagan AS \"zadagan\" WHERE date BETWEEN NOW() - INTERVAL '1 day' AND NOW() ORDER BY date DESC";
+                        statement = connectDB.connecting().createStatement();
+                        rs = statement.executeQuery(sql);
+
+                        while (rs.next()) {
+
+                            int id = rs.getInt("id");
+                            String name = rs.getString("name");
+                            String surname = rs.getString("surname");
+                            String phone_number = rs.getString("phone_number");
+                            String products_code = rs.getString("products_code");
+                            String items = rs.getString("items");
+                            Date date = rs.getDate("date");
+
+                            String mm = "Id : " + id +
+                                    "\n Name : " + name +
+                                    "\n Surname : " + surname +
+                                    "\n Phone Number : " + phone_number +
+                                    "\n Products Code : " + products_code +
+                                    "\n Items : " + items +
+                                    "\n Date : " + date;
+
+                            sendMsg(message, mm);
+
+                        }
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                    break;
+
+                //----------------------------------------------------------------------------
+
+                case "/1 week":
+
+                    sendMsg(message, "Last 7 days : ");
+
+                    try {
+
+                        String sql = "SELECT * FROM zadagan AS \"zadagan\" WHERE date BETWEEN NOW() - INTERVAL '7 days' AND NOW() ORDER BY date DESC";
+                        statement = connectDB.connecting().createStatement();
+                        rs = statement.executeQuery(sql);
+
+                        while (rs.next()) {
+
+                            int id = rs.getInt("id");
+                            String name = rs.getString("name");
+                            String surname = rs.getString("surname");
+                            String phone_number = rs.getString("phone_number");
+                            String products_code = rs.getString("products_code");
+                            String items = rs.getString("items");
+                            Date date = rs.getDate("date");
+
+                            String mm = "Id : " + id +
+                                    "\n Name : " + name +
+                                    "\n Surname : " + surname +
+                                    "\n Phone Number : " + phone_number +
+                                    "\n Products Code : " + products_code +
+                                    "\n Items : " + items +
+                                    "\n Date : " + date;
+
+                            sendMsg(message, mm);
+
+                        }
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                    break;
+
+                //----------------------------------------------------------------------------
+
+                case "/1 month":
+
+                    sendMsg(message, "Last 30 days : ");
+
+                    try {
+
+                        String sql = "SELECT * FROM zadagan AS \"zadagan\" WHERE date BETWEEN NOW() - INTERVAL '30 days' AND NOW() ORDER BY date DESC";
+                        statement = connectDB.connecting().createStatement();
+                        rs = statement.executeQuery(sql);
+
+                        while (rs.next()) {
+
+                            int id = rs.getInt("id");
+                            String name = rs.getString("name");
+                            String surname = rs.getString("surname");
+                            String phone_number = rs.getString("phone_number");
+                            String products_code = rs.getString("products_code");
+                            String items = rs.getString("items");
+                            Date date = rs.getDate("date");
+
+                            String mm = "Id : " + id +
+                                    "\n Name : " + name +
+                                    "\n Surname : " + surname +
+                                    "\n Phone Number : " + phone_number +
+                                    "\n Products Code : " + products_code +
+                                    "\n Items : " + items +
+                                    "\n Date : " + date;
+
+                            sendMsg(message, mm);
+
+                        }
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
 
                     break;
 

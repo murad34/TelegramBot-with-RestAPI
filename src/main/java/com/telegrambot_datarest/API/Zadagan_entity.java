@@ -1,6 +1,7 @@
 package com.telegrambot_datarest.API;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Table(name = "zadagan")
@@ -29,16 +30,20 @@ public class Zadagan_entity {
     @Column(name = "items")
     private String items;
 
+    @Column(name = "date")
+    private Date date;
+
     public Zadagan_entity() {
     }
 
-    public Zadagan_entity(String name, String surname, String address, String phone_number, String products_code, String items) {
+    public Zadagan_entity(String name, String surname, String address, String phone_number, String products_code, String items,Date date) {
         this.name = name;
         this.surname = surname;
         this.address = address;
         this.phone_number = phone_number;
         this.products_code = products_code;
         this.items = items;
+        this.date = date;
     }
 
     public int getId() {
@@ -97,6 +102,14 @@ public class Zadagan_entity {
         this.items = items;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Zadagan_entity{" +
@@ -107,6 +120,8 @@ public class Zadagan_entity {
                 ", phone_number='" + phone_number + '\'' +
                 ", products_code='" + products_code + '\'' +
                 ", items='" + items + '\'' +
+                ", date=" + date +
                 '}';
     }
+
 }
