@@ -4,9 +4,7 @@ import com.telegrambot_datarest.DataBase_JDBC.DataBase;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -50,8 +48,8 @@ public class Bot extends TelegramLongPollingBot {
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         KeyboardRow keyboardSecondRow = new KeyboardRow();
 
-        keyboardFirstRow.add(new KeyboardButton("/Список"));
-        keyboardFirstRow.add(new KeyboardButton("/Действия"));
+        keyboardFirstRow.add(new KeyboardButton("/List"));
+        keyboardFirstRow.add(new KeyboardButton("/Reports"));
         keyboardFirstRow.add(new KeyboardButton("/Info"));
 
         keyboardSecondRow.add(new KeyboardButton("/1 day"));
@@ -63,76 +61,6 @@ public class Bot extends TelegramLongPollingBot {
 
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
 
-    }
-
-    public static SendMessage sendInlineKeyBoardMessage(long chatId) {
-
-        Statement statement;
-        DataBase connectDB = new DataBase();
-        ResultSet rs;
-
-        //--------------------------------
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-
-        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton3 = new InlineKeyboardButton();
-
-        inlineKeyboardButton1.setText("Открыт");
-        inlineKeyboardButton1.setCallbackData("Done !");
-
-        inlineKeyboardButton2.setText("Закрыт");
-        inlineKeyboardButton2.setCallbackData("Done !");
-
-        inlineKeyboardButton3.setText("В обработке");
-        inlineKeyboardButton3.setCallbackData("Done !");
-
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-
-        keyboardButtonsRow1.add(inlineKeyboardButton1);
-        keyboardButtonsRow1.add(inlineKeyboardButton2);
-        keyboardButtonsRow2.add(inlineKeyboardButton3);
-
-//        try {
-//
-//            String sql = "select * from zadagan where id = 1";
-//            statement = connectDB.connecting().createStatement();
-//            rs = statement.executeQuery(sql);
-//
-//            while (rs.next()) {
-//
-//                int id = rs.getInt("id");
-//                String name = rs.getString("name");
-//                String surname = rs.getString("surname");
-//                String phone_number = rs.getString("phone_number");
-//                String products_code = rs.getString("products_code");
-//                String items = rs.getString("items");
-//                Date date = rs.getDate("date");
-//
-//                String mm = "Id : " + id +
-//                        "\n Name : " + name +
-//                        "\n Surname : " + surname ;
-////                        "\n Phone Number : " + phone_number ;
-////                        "\n Products Code : " + products_code +
-////                        "\n Items : " + items ;
-//
-//                inlineKeyboardButton1.setCallbackData(mm);
-//
-//            }
-//
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
-
-        inlineKeyboardMarkup.setKeyboard(rowList);
-
-        return new SendMessage().setChatId(chatId).setText("Please choose").setReplyMarkup(inlineKeyboardMarkup);
     }
 
     public void methodForList(Update update) {
@@ -180,41 +108,12 @@ public class Bot extends TelegramLongPollingBot {
 
     }
 
-    public void methodForSearch(Update update) {
-
-        if(update.hasMessage()){
-            if(update.getMessage().hasText()){
-                if(update.getMessage().getText().equals("/Действия")){
-                    try {
-                        execute(sendInlineKeyBoardMessage(update.getMessage().getChatId()));
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }else if(update.hasCallbackQuery()){
-            try {
-                execute(new SendMessage().setText(
-                        update.getCallbackQuery().getData())
-                        .setChatId(update.getCallbackQuery().getMessage().getChatId()));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-
     @Override
     public void onUpdateReceived(Update update) {
 
-        methodForSearch(update);
-
-        Statement statement;
-        DataBase connectDB = new DataBase();
-        ResultSet rs;
-
         Message message = update.getMessage();
+
+        //---------------------------------------
 
         if (message != null && message.hasText()) {
 
@@ -228,7 +127,7 @@ public class Bot extends TelegramLongPollingBot {
 
                 //------------------- LIST -------------------------------------------------
 
-                case "/Список":
+                case "/list":
 
                     methodForList(update);
 
@@ -236,7 +135,13 @@ public class Bot extends TelegramLongPollingBot {
 
                 // ----------------- SEARCH ------------------------------------------------
 
-                case "/Действия":
+                case "a":
+
+                    break;
+
+                //----------------------------------------------------------------------------
+
+                case "b":
 
 
 
@@ -244,121 +149,17 @@ public class Bot extends TelegramLongPollingBot {
 
                 //----------------------------------------------------------------------------
 
-                case "/1 day":
+                case "c":
 
-                    sendMsg(message, "Last 24 hours : ");
 
-                    try {
-
-                        String sql = "SELECT * FROM zadagan AS \"zadagan\" WHERE date BETWEEN NOW() - INTERVAL '1 day' AND NOW() ORDER BY date DESC";
-                        statement = connectDB.connecting().createStatement();
-                        rs = statement.executeQuery(sql);
-
-                        while (rs.next()) {
-
-                            int id = rs.getInt("id");
-                            String name = rs.getString("name");
-                            String surname = rs.getString("surname");
-                            String phone_number = rs.getString("phone_number");
-                            String products_code = rs.getString("products_code");
-                            String items = rs.getString("items");
-                            Date date = rs.getDate("date");
-
-                            String mm = "Id : " + id +
-                                    "\n Name : " + name +
-                                    "\n Surname : " + surname +
-                                    "\n Phone Number : " + phone_number +
-                                    "\n Products Code : " + products_code +
-                                    "\n Items : " + items +
-                                    "\n Date : " + date;
-
-                            sendMsg(message, mm);
-
-                        }
-
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
 
                     break;
 
                 //----------------------------------------------------------------------------
 
-                case "/1 week":
+                case "d":
 
-                    sendMsg(message, "Last 7 days : ");
 
-                    try {
-
-                        String sql = "SELECT * FROM zadagan AS \"zadagan\" WHERE date BETWEEN NOW() - INTERVAL '7 days' AND NOW() ORDER BY date DESC";
-                        statement = connectDB.connecting().createStatement();
-                        rs = statement.executeQuery(sql);
-
-                        while (rs.next()) {
-
-                            int id = rs.getInt("id");
-                            String name = rs.getString("name");
-                            String surname = rs.getString("surname");
-                            String phone_number = rs.getString("phone_number");
-                            String products_code = rs.getString("products_code");
-                            String items = rs.getString("items");
-                            Date date = rs.getDate("date");
-
-                            String mm = "Id : " + id +
-                                    "\n Name : " + name +
-                                    "\n Surname : " + surname +
-                                    "\n Phone Number : " + phone_number +
-                                    "\n Products Code : " + products_code +
-                                    "\n Items : " + items +
-                                    "\n Date : " + date;
-
-                            sendMsg(message, mm);
-
-                        }
-
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-
-                    break;
-
-                //----------------------------------------------------------------------------
-
-                case "/1 month":
-
-                    sendMsg(message, "Last 30 days : ");
-
-                    try {
-
-                        String sql = "SELECT * FROM zadagan AS \"zadagan\" WHERE date BETWEEN NOW() - INTERVAL '30 days' AND NOW() ORDER BY date DESC";
-                        statement = connectDB.connecting().createStatement();
-                        rs = statement.executeQuery(sql);
-
-                        while (rs.next()) {
-
-                            int id = rs.getInt("id");
-                            String name = rs.getString("name");
-                            String surname = rs.getString("surname");
-                            String phone_number = rs.getString("phone_number");
-                            String products_code = rs.getString("products_code");
-                            String items = rs.getString("items");
-                            Date date = rs.getDate("date");
-
-                            String mm = "Id : " + id +
-                                    "\n Name : " + name +
-                                    "\n Surname : " + surname +
-                                    "\n Phone Number : " + phone_number +
-                                    "\n Products Code : " + products_code +
-                                    "\n Items : " + items +
-                                    "\n Date : " + date;
-
-                            sendMsg(message, mm);
-
-                        }
-
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
 
                     break;
 
@@ -380,6 +181,7 @@ public class Bot extends TelegramLongPollingBot {
 
     }
 
+    //---------------------------------------------------------------------------------------------
 
     public String getBotUsername() {
         return "ElektroPark_bot";
