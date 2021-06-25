@@ -1,4 +1,4 @@
-package com.telegrambot_datarest.telegramBot.reports;
+package com.telegrambot_datarest.telegramBot.commands;
 
 import com.telegrambot_datarest.DataBase_JDBC.DataBase;
 import com.telegrambot_datarest.telegramBot.Bot;
@@ -27,7 +27,7 @@ public class Full_report extends Bot {
 
             while (rs1.next()) {
 
-                sendMsg(message,"Количество всех заказов за последний год : " + rs1.getString("count"));
+                sendMsg(message, "Количество всех заказов за последний год : " + rs1.getString("count"));
 
             }
 
@@ -53,7 +53,7 @@ public class Full_report extends Bot {
 
             while (rs1.next()) {
 
-                sendMsg(message,"Количество открытых заказов за последний год : " + rs1.getString("count"));
+                sendMsg(message, "Количество открытых заказов за последний год : " + rs1.getString("count"));
 
             }
 
@@ -79,7 +79,7 @@ public class Full_report extends Bot {
 
             while (rs2.next()) {
 
-                sendMsg(message,"Количество закрытых заказов за последний год : " + rs2.getString("count"));
+                sendMsg(message, "Количество закрытых заказов за последний год : " + rs2.getString("count"));
 
             }
 
@@ -105,7 +105,7 @@ public class Full_report extends Bot {
 
             while (rs3.next()) {
 
-                sendMsg(message,"Количество заказов в обработке за последний год : " + rs3.getString("count"));
+                sendMsg(message, "Количество заказов в обработке за последний год : " + rs3.getString("count"));
 
             }
 
@@ -131,7 +131,7 @@ public class Full_report extends Bot {
 
             while (rs3.next()) {
 
-                sendMsg(message,"Количество закрытых заказов за последние 9 месяцев : " + rs3.getString("count"));
+                sendMsg(message, "Количество закрытых заказов за последние 9 месяцев : " + rs3.getString("count"));
 
             }
 
@@ -157,7 +157,7 @@ public class Full_report extends Bot {
 
             while (rs3.next()) {
 
-                sendMsg(message,"Количество закрытых заказов за последние 6 месяцев : " + rs3.getString("count"));
+                sendMsg(message, "Количество закрытых заказов за последние 6 месяцев : " + rs3.getString("count"));
 
             }
 
@@ -183,7 +183,7 @@ public class Full_report extends Bot {
 
             while (rs3.next()) {
 
-                sendMsg(message,"Количество закрытых заказов за последние 3 месяцев : " + rs3.getString("count"));
+                sendMsg(message, "Количество закрытых заказов за последние 3 месяцев : " + rs3.getString("count"));
 
             }
 

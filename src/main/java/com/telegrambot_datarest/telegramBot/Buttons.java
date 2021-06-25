@@ -24,7 +24,7 @@ public class Buttons {
 
         keyboardFirstRow.add(new KeyboardButton("Commands"));
         keyboardFirstRow.add(new KeyboardButton("Status"));
-        keyboardFirstRow.add(new KeyboardButton("Info"));
+        keyboardFirstRow.add(new KeyboardButton("Search"));
 
 //        keyboardSecondRow.add(new KeyboardButton("/1 day"));
 //        keyboardSecondRow.add(new KeyboardButton("/1 week"));

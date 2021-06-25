@@ -1,4 +1,4 @@
-package com.telegrambot_datarest.telegramBot.reports;
+package com.telegrambot_datarest.telegramBot.commands;
 
 import com.telegrambot_datarest.DataBase_JDBC.DataBase;
 import com.telegrambot_datarest.telegramBot.Bot;

@@ -1,6 +1,7 @@
-package com.telegrambot_datarest.telegramBot;
+package com.telegrambot_datarest.telegramBot.commands;
 
 import com.telegrambot_datarest.DataBase_JDBC.DataBase;
+import com.telegrambot_datarest.telegramBot.Bot;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 
@@ -19,7 +20,7 @@ public class GetWholeList extends Bot {
 
         try {
 
-            String sql = "select * from zadagan";
+            String sql = "select * from zadagan order by id";
             statement = connectDB.connecting().createStatement();
             rs = statement.executeQuery(sql);
 
