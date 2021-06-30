@@ -20,18 +20,18 @@ public class Buttons {
 
         List<KeyboardRow> keyboardRowList = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        KeyboardRow keyboardSecondRow = new KeyboardRow();
+//        KeyboardRow keyboardSecondRow = new KeyboardRow();
 
         keyboardFirstRow.add(new KeyboardButton("Commands"));
         keyboardFirstRow.add(new KeyboardButton("Status"));
-        keyboardFirstRow.add(new KeyboardButton("Search"));
+//        keyboardFirstRow.add(new KeyboardButton("Search"));
 
 //        keyboardSecondRow.add(new KeyboardButton("/1 day"));
 //        keyboardSecondRow.add(new KeyboardButton("/1 week"));
 //        keyboardSecondRow.add(new KeyboardButton("/1 month"));
 
         keyboardRowList.add(keyboardFirstRow);
-        keyboardRowList.add(keyboardSecondRow);
+//        keyboardRowList.add(keyboardSecondRow);
 
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
 

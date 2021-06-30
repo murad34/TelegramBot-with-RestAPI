@@ -45,210 +45,156 @@ public class Bot extends TelegramLongPollingBot {
 
         if (message != null && message.hasText()) {
 
-            if (message.getText().startsWith("id = ") || message.getText().startsWith("id=")) {
+            switch (message.getText()) {
 
-                Statement statement;
-                DataBase connectDB = new DataBase();
-                ResultSet rs;
+                case "/start":
 
-                try {
+                    sendMsg(message, "Hi,I am Telegram Bot of Zadagan company \n" +
+                            "Please press button 'Commands' below");
 
-                    String sql = "select * from zadagan where " + message.getText();
-                    statement = connectDB.connecting().createStatement();
-                    rs = statement.executeQuery(sql);
+                    break;
 
-                    while (rs.next()) {
+                //------------------- COMMANDS -------------------------------------------------
 
-                        int id = rs.getInt("id");
-                        String name = rs.getString("name");
-                        String surname = rs.getString("surname");
-                        String phone_number = rs.getString("phone_number");
-                        String products_code = rs.getString("products_code");
-                        String items = rs.getString("items");
-                        Date date = rs.getDate("date");
-                        String status = rs.getString("status");
+                case "Commands":
 
-                        String mm = "Id : " + id +
-                                "\n Name : " + name +
-                                "\n Surname : " + surname +
-                                "\n Phone Number : " + phone_number +
-                                "\n Products Code : " + products_code +
-                                "\n Items : " + items +
-                                "\n Date : " + date +
-                                "\n Status : " + status;
+                    sendMsg(message, "In order to see all commands enter :  /  ");
 
-                        sendMsg(message, mm);
+                    break;
 
-                    }
+                //------------------- LIST -------------------------------------------------
 
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
 
-            } else {
+                case "/list":
 
-                switch (message.getText()) {
+                    GetWholeList getWholeList = new GetWholeList();
 
-                    case "/start":
+                    getWholeList.methodForList(update);
 
-                        sendMsg(message, "Hi,I am Telegram Bot of Zadagan company \n" +
-                                "Please press button 'Commands' below");
+                    break;
 
-                        break;
+                // --------------------------------------------------------------------------
 
-                    //------------------- COMMANDS -------------------------------------------------
+                case "/small_report":
 
-                    case "Commands":
+                    Small_report small_report = new Small_report();
 
-                        sendMsg(message, "In order to see all commands enter /");
+                    small_report.methodSmallReport1(update);
+                    small_report.methodSmallReport2(update);
+                    small_report.methodSmallReport3(update);
 
-                        break;
+                    break;
 
-                    //------------------- LIST -------------------------------------------------
+                //----------------------------------------------------------------------------
 
+                case "/full_report":
 
-                    case "/list":
+                    Full_report full_report = new Full_report();
 
-                        GetWholeList getWholeList = new GetWholeList();
+                    full_report.methodFullReport1(update);
+                    full_report.methodFullReport2(update);
+                    full_report.methodFullReport3(update);
+                    full_report.methodFullReport4(update);
+                    full_report.methodFullReport5(update);
+                    full_report.methodFullReport6(update);
+                    full_report.methodFullReport7(update);
 
-                        getWholeList.methodForList(update);
+                    break;
 
-                        break;
+                //----------------------------------------------------------------------------
 
-                    // --------------------------------------------------------------------------
+                case "/orders":
 
-                    case "/small_report":
+                    sendMsg(message, "Orders1 : Последние 10 заказов \n" +
+                            "Orders2 : Последние 20 открытых заказов \n" +
+                            "Orders3 : Последние 20 закрытых заказов \n" +
+                            "Orders4 : Последние 20 заказов в обработке \n" +
+                            "Orders5 : Закрытые заказы за 31 день \n" +
+                            "\n Введите : OrdersX \n" +
+                            "(вместо X используйте числа 1-5)");
 
-                        Small_report small_report = new Small_report();
+                    break;
 
-                        small_report.methodSmallReport1(update);
-                        small_report.methodSmallReport2(update);
-                        small_report.methodSmallReport3(update);
+                //----------------------------------------------------------------------------
 
-                        break;
+                case "Orders1":
 
-                    //----------------------------------------------------------------------------
+                    Orders orders1 = new Orders();
 
-                    case "/full_report":
+                    sendMsg(message, "Последние 10 заказов : ");
+                    orders1.methodOrders1(update);
 
-                        Full_report full_report = new Full_report();
+                    break;
 
-                        full_report.methodFullReport1(update);
-                        full_report.methodFullReport2(update);
-                        full_report.methodFullReport3(update);
-                        full_report.methodFullReport4(update);
-                        full_report.methodFullReport5(update);
-                        full_report.methodFullReport6(update);
-                        full_report.methodFullReport7(update);
+                //----------------------------------------------------------------------------
 
-                        break;
+                case "Orders2":
 
-                    //----------------------------------------------------------------------------
+                    Orders orders2 = new Orders();
 
-                    case "/orders":
+                    sendMsg(message, "Последние 20 открытых заказов : ");
+                    orders2.methodOrders2(update);
 
-                        sendMsg(message, "Orders-1 : Последние 10 заказов \n" +
-                                "Orders-2 : Последние 20 открытых заказов \n" +
-                                "Orders-3 : Последние 20 закрытых заказов \n" +
-                                "Orders-4 : Последние 20 заказов в обработке \n" +
-                                "Orders-5 : Закрытые заказы за 31 день \n" +
-                                "\n Введите : Orders-n \n" +
-                                "(вместо n используйте числа 1-5)");
+                    break;
 
-                        break;
+                //----------------------------------------------------------------------------
 
-                    //----------------------------------------------------------------------------
+                case "Orders3":
 
-                    case "Orders-1":
+                    Orders orders3 = new Orders();
 
-                        Orders orders1 = new Orders();
+                    sendMsg(message, "Последние 20 закрытых заказов : ");
+                    orders3.methodOrders3(update);
 
-                        sendMsg(message, "Последние 10 заказов : ");
-                        orders1.methodOrders1(update);
+                    break;
 
-                        break;
+                //----------------------------------------------------------------------------
 
-                    //----------------------------------------------------------------------------
+                case "Orders4":
 
-                    case "Orders-2":
+                    Orders orders4 = new Orders();
 
-                        Orders orders2 = new Orders();
+                    sendMsg(message, "Последние 20 заказов в обработке : ");
+                    orders4.methodOrders4(update);
 
-                        sendMsg(message, "Последние 20 открытых заказов : ");
-                        orders2.methodOrders2(update);
+                    break;
 
-                        break;
+                //----------------------------------------------------------------------------
 
-                    //----------------------------------------------------------------------------
+                case "Orders5":
 
-                    case "Orders-3":
+                    Orders orders5 = new Orders();
 
-                        Orders orders3 = new Orders();
+                    sendMsg(message, "Закрытые заказы за 31 день : ");
+                    orders5.methodOrders5(update);
 
-                        sendMsg(message, "Последние 20 закрытых заказов : ");
-                        orders3.methodOrders3(update);
+                    break;
 
-                        break;
+                //----------------------------------------------------------------------------
 
-                    //----------------------------------------------------------------------------
+                case "Info":
 
-                    case "Orders-4":
+                    sendMsg(message, "Telegram Bot of Zadagan Company !");
 
-                        Orders orders4 = new Orders();
+                    break;
 
-                        sendMsg(message, "Последние 20 заказов в обработке : ");
-                        orders4.methodOrders4(update);
+                //----------------------------------------------------------------------------
 
-                        break;
+                case "Status":
 
-                    //----------------------------------------------------------------------------
+                    sendMsg(message, "");
 
-                    case "Orders-5":
+                    break;
 
-                        Orders orders5 = new Orders();
+                //----------------------------------------------------------------------------
 
-                        sendMsg(message, "Закрытые заказы за 31 день : ");
-                        orders5.methodOrders5(update);
+                case "":
 
-                        break;
+                    break;
 
-                    //----------------------------------------------------------------------------
+                default:
 
-                    case "Info":
-
-                        sendMsg(message, "Telegram Bot of Zadagan Company !");
-
-                        break;
-
-                    //----------------------------------------------------------------------------
-
-                    case "Status":
-
-                        sendMsg(message, "If you want to change status of any order,you should enter : \n" +
-                                "\n id,status,order \n" +
-                                "\n Вместо id введите id заказа \n" +
-                                "\n Вместо status введите одно из перечисленных : \n" +
-                                "открыт,закрыт,в обработке \n" +
-                                "\n Example : \n" +
-                                "7,закрыт,order");
-
-                        break;
-
-                    //----------------------------------------------------------------------------
-
-                    case "Search":
-
-                        sendMsg(message, "Enter please : \n" +
-                                "\n id = n \n" +
-                                "\n Вместо n введите id заказа");
-
-                        break;
-
-                    default:
-
-//                        sendMsg(message, "I am sorry,but I can not understand you !");
-
-                }
+                    sendMsg(message, "I am sorry,but I can not understand you !");
 
             }
 
