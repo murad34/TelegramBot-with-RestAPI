@@ -20,18 +20,36 @@ public class Buttons {
 
         List<KeyboardRow> keyboardRowList = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-//        KeyboardRow keyboardSecondRow = new KeyboardRow();
 
         keyboardFirstRow.add(new KeyboardButton("Commands"));
+        keyboardFirstRow.add(new KeyboardButton("Orders"));
         keyboardFirstRow.add(new KeyboardButton("Status"));
-//        keyboardFirstRow.add(new KeyboardButton("Search"));
-
-//        keyboardSecondRow.add(new KeyboardButton("/1 day"));
-//        keyboardSecondRow.add(new KeyboardButton("/1 week"));
-//        keyboardSecondRow.add(new KeyboardButton("/1 month"));
 
         keyboardRowList.add(keyboardFirstRow);
-//        keyboardRowList.add(keyboardSecondRow);
+
+        replyKeyboardMarkup.setKeyboard(keyboardRowList);
+
+    }
+
+    public void setButtons2(SendMessage sendMessage) {
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        List<KeyboardRow> keyboardRowList = new ArrayList<>();
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+
+        keyboardSecondRow.add(new KeyboardButton("\uD83D\uDD1F"));
+        keyboardSecondRow.add(new KeyboardButton("\uD83D\uDFE2"));
+        keyboardSecondRow.add(new KeyboardButton("\uD83D\uDD34"));
+        keyboardSecondRow.add(new KeyboardButton("\uD83D\uDFE1"));
+        keyboardSecondRow.add(new KeyboardButton("\uD83D\uDFE5"));
+        keyboardSecondRow.add(new KeyboardButton("back"));
+
+        keyboardRowList.add(keyboardSecondRow);
 
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
 

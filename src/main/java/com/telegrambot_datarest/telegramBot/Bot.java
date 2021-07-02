@@ -1,6 +1,5 @@
 package com.telegrambot_datarest.telegramBot;
 
-import com.telegrambot_datarest.DataBase_JDBC.DataBase;
 import com.telegrambot_datarest.telegramBot.commands.Full_report;
 import com.telegrambot_datarest.telegramBot.commands.GetWholeList;
 import com.telegrambot_datarest.telegramBot.commands.Orders;
@@ -11,11 +10,6 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 public class Bot extends TelegramLongPollingBot {
 
     public void sendMsg(Message message, String text) {
@@ -23,7 +17,7 @@ public class Bot extends TelegramLongPollingBot {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId().toString());
-        sendMessage.setReplyToMessageId(message.getMessageId());
+//        sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
 
         try {
@@ -36,171 +30,218 @@ public class Bot extends TelegramLongPollingBot {
 
     }
 
+    public void sendMsg2(Message message, String text) {
+
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setText(text);
+
+        try {
+            Buttons buttons = new Buttons();
+            buttons.setButtons2(sendMessage);
+            sendMessage(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     public void onUpdateReceived(Update update) {
 
         Message message = update.getMessage();
 
+        Integer private_bot = message.getFrom().getId();
+
+        System.out.println(private_bot);
+
         //---------------------------------------
 
-        if (message != null && message.hasText()) {
+//        if (message.getFrom().getId().equals(67332)) {
 
-            switch (message.getText()) {
+            if (message != null && message.hasText()) {
 
-                case "/start":
+                if (Character.isDigit(message.getText().charAt(0))) {
 
-                    sendMsg(message, "Hi,I am Telegram Bot of Zadagan company \n" +
-                            "Please press button 'Commands' below");
+                    Status status = new Status();
+                    status.methodForStatus(update);
 
-                    break;
+                } else {
 
-                //------------------- COMMANDS -------------------------------------------------
+                    switch (message.getText()) {
 
-                case "Commands":
+                        case "/start":
 
-                    sendMsg(message, "In order to see all commands enter :  /  ");
+                            sendMsg(message, "Hi,I am Telegram Bot of Zadagan company \n" +
+                                    "Please press button 'Commands' below");
 
-                    break;
+                            break;
 
-                //------------------- LIST -------------------------------------------------
+                        //------------------- COMMANDS -------------------------------------------------
 
+                        case "Commands":
 
-                case "/list":
+                            sendMsg(message, "In order to see all commands enter :  /  ");
 
-                    GetWholeList getWholeList = new GetWholeList();
+                            break;
 
-                    getWholeList.methodForList(update);
+                        //------------------- LIST -------------------------------------------------
 
-                    break;
 
-                // --------------------------------------------------------------------------
+                        case "/list":
 
-                case "/small_report":
+                            GetWholeList getWholeList = new GetWholeList();
 
-                    Small_report small_report = new Small_report();
+                            getWholeList.methodForList(update);
 
-                    small_report.methodSmallReport1(update);
-                    small_report.methodSmallReport2(update);
-                    small_report.methodSmallReport3(update);
+                            break;
 
-                    break;
+                        // --------------------------------------------------------------------------
 
-                //----------------------------------------------------------------------------
+                        case "/small_report":
 
-                case "/full_report":
+                            Small_report small_report = new Small_report();
 
-                    Full_report full_report = new Full_report();
+                            small_report.methodSmallReport1(update);
+                            small_report.methodSmallReport2(update);
+                            small_report.methodSmallReport3(update);
 
-                    full_report.methodFullReport1(update);
-                    full_report.methodFullReport2(update);
-                    full_report.methodFullReport3(update);
-                    full_report.methodFullReport4(update);
-                    full_report.methodFullReport5(update);
-                    full_report.methodFullReport6(update);
-                    full_report.methodFullReport7(update);
+                            break;
 
-                    break;
+                        //----------------------------------------------------------------------------
 
-                //----------------------------------------------------------------------------
+                        case "/full_report":
 
-                case "/orders":
+                            Full_report full_report = new Full_report();
 
-                    sendMsg(message, "Orders1 : Последние 10 заказов \n" +
-                            "Orders2 : Последние 20 открытых заказов \n" +
-                            "Orders3 : Последние 20 закрытых заказов \n" +
-                            "Orders4 : Последние 20 заказов в обработке \n" +
-                            "Orders5 : Закрытые заказы за 31 день \n" +
-                            "\n Введите : OrdersX \n" +
-                            "(вместо X используйте числа 1-5)");
+                            full_report.methodFullReport1(update);
+                            full_report.methodFullReport2(update);
+                            full_report.methodFullReport3(update);
+                            full_report.methodFullReport4(update);
+                            full_report.methodFullReport5(update);
+                            full_report.methodFullReport6(update);
+                            full_report.methodFullReport7(update);
 
-                    break;
+                            break;
 
-                //----------------------------------------------------------------------------
+                        //----------------------------------------------------------------------------
 
-                case "Orders1":
+                        case "Orders":
 
-                    Orders orders1 = new Orders();
+                            sendMsg2(message, "\uD83D\uDD1F : Последние 10 заказов \n" +
+                                    "\uD83D\uDFE2 : Последние 20 открытых заказов \n" +
+                                    "\uD83D\uDD34 : Последние 20 закрытых заказов \n" +
+                                    "\uD83D\uDFE1 : Последние 20 заказов в обработке \n" +
+                                    "\uD83D\uDFE5  : Закрытые заказы за 31 день ");
 
-                    sendMsg(message, "Последние 10 заказов : ");
-                    orders1.methodOrders1(update);
+                            break;
 
-                    break;
+                        //----------------------------------------------------------------------------
 
-                //----------------------------------------------------------------------------
+                        case "\uD83D\uDD1F":
 
-                case "Orders2":
+                            Orders orders1 = new Orders();
 
-                    Orders orders2 = new Orders();
+                            sendMsg2(message, "Последние 10 заказов : ");
+                            orders1.methodOrders1(update);
 
-                    sendMsg(message, "Последние 20 открытых заказов : ");
-                    orders2.methodOrders2(update);
+                            break;
 
-                    break;
+                        //----------------------------------------------------------------------------
 
-                //----------------------------------------------------------------------------
+                        case "\uD83D\uDFE2":
 
-                case "Orders3":
+                            Orders orders2 = new Orders();
 
-                    Orders orders3 = new Orders();
+                            sendMsg2(message, "Последние 20 открытых заказов : ");
+                            orders2.methodOrders2(update);
 
-                    sendMsg(message, "Последние 20 закрытых заказов : ");
-                    orders3.methodOrders3(update);
+                            break;
 
-                    break;
+                        //----------------------------------------------------------------------------
 
-                //----------------------------------------------------------------------------
+                        case "\uD83D\uDD34":
 
-                case "Orders4":
+                            Orders orders3 = new Orders();
 
-                    Orders orders4 = new Orders();
+                            sendMsg2(message, "Последние 20 закрытых заказов : ");
+                            orders3.methodOrders3(update);
 
-                    sendMsg(message, "Последние 20 заказов в обработке : ");
-                    orders4.methodOrders4(update);
+                            break;
 
-                    break;
+                        //----------------------------------------------------------------------------
 
-                //----------------------------------------------------------------------------
+                        case "\uD83D\uDFE1":
 
-                case "Orders5":
+                            Orders orders4 = new Orders();
 
-                    Orders orders5 = new Orders();
+                            sendMsg2(message, "Последние 20 заказов в обработке : ");
+                            orders4.methodOrders4(update);
 
-                    sendMsg(message, "Закрытые заказы за 31 день : ");
-                    orders5.methodOrders5(update);
+                            break;
 
-                    break;
+                        //----------------------------------------------------------------------------
 
-                //----------------------------------------------------------------------------
+                        case "\uD83D\uDFE5":
 
-                case "Info":
+                            Orders orders5 = new Orders();
 
-                    sendMsg(message, "Telegram Bot of Zadagan Company !");
+                            sendMsg2(message, "Закрытые заказы за 31 день : ");
+                            orders5.methodOrders5(update);
 
-                    break;
+                            break;
 
-                //----------------------------------------------------------------------------
+                        //----------------------------------------------------------------------------
 
-                case "Status":
+                        case "back":
 
-                    sendMsg(message, "");
+                            sendMsg(message, "Please choose a button");
 
-                    break;
+                            break;
 
-                //----------------------------------------------------------------------------
+                        //----------------------------------------------------------------------------
 
-                case "":
+                        case "Status":
 
-                    break;
+                            sendMsg(message, "Для того чтобы изменить статус введите : \n" +
+                                    "\n id,status \n" +
+                                    "\n Status : \n" +
+                                    "a - Открыт \n" +
+                                    "b - В обрабокте \n" +
+                                    "c - Закрыт \n" +
+                                    "\n Пример : " +
+                                    "\n 7,b");
 
-                default:
+                            break;
 
-                    sendMsg(message, "I am sorry,but I can not understand you !");
+                        //----------------------------------------------------------------------------
+
+                        case "wthtr":
+
+                            sendMsg(message, "srbsg");
+
+                            break;
+
+                        //----------------------------------------------------------------------------
+
+                        case "hiol":
+
+                            break;
+
+                        default:
+
+                            sendMsg(message, "I am sorry,but I can not understand you !");
+
+                    }
+
+                }
 
             }
 
         }
 
-    }
+//    }
 
     //---------------------------------------------------------------------------------------------
 

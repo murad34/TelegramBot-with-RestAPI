@@ -36,18 +36,21 @@ public class GetWholeList extends Bot {
                 String items = rs.getString("items");
                 Date date = rs.getDate("date");
                 String status = rs.getString("status");
+                String address = rs.getString("address");
+                int price = rs.getInt("price");
 
 //                System.out.printf("%d. %s %s :\n Phone Number : %s \n Products Code : %s \n Items : %s  \n \n",
 //                        id, name, surname, phone_number, products_code, items);
 
-                String mm = "Id : " + id +
-                        "\n Name : " + name +
-                        "\n Surname : " + surname +
-                        "\n Phone Number : " + phone_number +
-                        "\n Products Code : " + products_code +
-                        "\n Items : " + items +
-                        "\n Date : " + date +
-                        "\n Status : " + status ;
+                String mm = "\uD83E\uDD16 Id : " + id +
+                        "\n \uD83D\uDE4B\u200D♂️ Name : " + name + " " +surname +
+                        "\n ☎️ Phone Number : " + phone_number +
+                        "\n 🏠 Address : " + address +
+                        "\n \uD83D\uDCE6 Products Code : " + products_code +
+                        "\n ✨ Items : " + items +
+                        "\n 🏷️ Price : " + price +
+                        "\n \uD83D\uDCC5 Date : " + date +
+                        "\n ❕ Status : " + status ;
 
                 sendMsg(message, mm);
 
