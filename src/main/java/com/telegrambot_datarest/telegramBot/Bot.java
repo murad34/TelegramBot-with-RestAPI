@@ -217,18 +217,6 @@ public class Bot extends TelegramLongPollingBot {
 
                         //----------------------------------------------------------------------------
 
-                        case "wthtr":
-
-                            sendMsg(message, "srbsg");
-
-                            break;
-
-                        //----------------------------------------------------------------------------
-
-                        case "hiol":
-
-                            break;
-
                         default:
 
                             sendMsg(message, "I am sorry,but I can not understand you !");
@@ -246,11 +234,11 @@ public class Bot extends TelegramLongPollingBot {
     //---------------------------------------------------------------------------------------------
 
     public String getBotUsername() {
-        return "ElektroPark_bot";
+        return "zadagan_sales_bot";
     }
 
     public String getBotToken() {
-        return "1570630985:AAH_IuQtUuzRccZctKOfSjHSpx89XrpiFpw";
+        return "1803099776:AAEVYyhBtfEykKZnHB5Py6gIyUB_MIWEqDc";
     }
 
 }

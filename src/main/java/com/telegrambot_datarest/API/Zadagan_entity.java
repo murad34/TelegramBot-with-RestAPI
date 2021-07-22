@@ -33,10 +33,16 @@ public class Zadagan_entity {
     @Column(name = "date")
     private Date date;
 
+    @Column(name = "price")
+    private int price;
+
+    @Column(name = "status")
+    private String status;
+
     public Zadagan_entity() {
     }
 
-    public Zadagan_entity(String name, String surname, String address, String phone_number, String products_code, String items,Date date) {
+    public Zadagan_entity(String name, String surname, String address, String phone_number, String products_code, String items, Date date, int price, String status) {
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -44,6 +50,8 @@ public class Zadagan_entity {
         this.products_code = products_code;
         this.items = items;
         this.date = date;
+        this.price = price;
+        this.status = status;
     }
 
     public int getId() {
@@ -110,6 +118,22 @@ public class Zadagan_entity {
         this.date = date;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Zadagan_entity{" +
@@ -121,7 +145,8 @@ public class Zadagan_entity {
                 ", products_code='" + products_code + '\'' +
                 ", items='" + items + '\'' +
                 ", date=" + date +
+                ", price=" + price +
+                ", status='" + status + '\'' +
                 '}';
     }
-
 }

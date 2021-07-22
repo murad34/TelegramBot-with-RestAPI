@@ -38,8 +38,6 @@ public class Status extends Bot {
                     throwables.printStackTrace();
                 }
 
-                sendMsg(message, "Done !");
-
                 updateOrder(update);
 
                 break;
@@ -56,8 +54,6 @@ public class Status extends Bot {
                     throwables.printStackTrace();
                 }
 
-                sendMsg(message, "Done ✓");
-
                 updateOrder(update);
 
                 break;
@@ -73,8 +69,6 @@ public class Status extends Bot {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-
-                sendMsg(message, "Done ✓");
 
                 updateOrder(update);
 
@@ -125,6 +119,8 @@ public class Status extends Bot {
                         "\n 🏷️ Price : " + price +
                         "\n \uD83D\uDCC5 Date : " + date +
                         "\n ❕ Status : " + status ;
+
+                sendMsg(message, "Done ✓");
 
                 sendMsg(message, mm);
 
